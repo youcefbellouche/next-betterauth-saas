@@ -11,6 +11,7 @@ const publicRoutes = [
   "/terms",
   "/api/auth",
   "/waitlist",
+  "/admin/setup",
 ];
 
 const authRoutes = ["/login", "/register"];
@@ -39,6 +40,7 @@ export async function proxy(request: NextRequest) {
   );
 
   const session = await sessionResponse.json();
+  const user = session?.user;
 
   const isPublicRoute = publicRoutes.some((route) => 
     pathname === route || pathname.startsWith(`${route}/`)
@@ -52,15 +54,16 @@ export async function proxy(request: NextRequest) {
   }
 
   // 4. Protection Gate: If it's not public and no session, redirect to login
-  if (!isPublicRoute && !session) {
+  if (!isPublicRoute && !user) {
     const searchParams = new URLSearchParams(request.nextUrl.search);
     searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(new URL(`/login?${searchParams.toString()}`, request.url));
   }
 
   // 5. Admin route RBAC check
-  if (isAdminRoute && session) {
-    const role = session.user?.role;
+  // Skip RBAC for the initial setup page
+  if (isAdminRoute && user && pathname !== "/admin/setup") {
+    const role = user.role;
     if (role !== "admin" && role !== "superadmin") {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
