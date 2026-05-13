@@ -60,23 +60,27 @@ export const auth = betterAuth({
         enabled: true,
       },
     }),
-    stripe({
-      stripeClient,
-      stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || "",
-      createCustomerOnSignUp: true,
-      subscription: {
-        enabled: true,
-        plans: [
-          {
-            name: "pro",
-            priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID as string,
-          },
-          {
-            name: "enterprise",
-            priceId: process.env.NEXT_PUBLIC_STRIPE_ENTERPRISE_PRICE_ID as string,
-          }
+    ...(stripeClient
+      ? [
+          stripe({
+            stripeClient: stripeClient as any, // Cast to any to bypass strict type check if needed, but we know it's a valid Stripe instance here
+            stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || "",
+            createCustomerOnSignUp: true,
+            subscription: {
+              enabled: true,
+              plans: [
+                {
+                  name: "pro",
+                  priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID as string,
+                },
+                {
+                  name: "enterprise",
+                  priceId: process.env.NEXT_PUBLIC_STRIPE_ENTERPRISE_PRICE_ID as string,
+                },
+              ],
+            },
+          }),
         ]
-      }
-    })
-  ]
+      : []),
+  ],
 });

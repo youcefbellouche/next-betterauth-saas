@@ -22,7 +22,7 @@ import {
   updateAdminSecurityAction, 
   getSystemPreferences, 
   toggleSystemPreference 
-} from "@/features/admin/actions/settings-action";
+} from "@/features/admin/actions/settings.action";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 

@@ -33,7 +33,7 @@ export function Pricing({ currentPlanId = "free", showCurrentPlanBadge = false }
       price: "$29",
       description: "For growing businesses.",
       features: ["Unlimited users", "Priority email support", "Advanced analytics", "Custom domain"],
-      priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID!,
+      priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID || "",
       isPopular: true,
     },
     {
@@ -42,7 +42,7 @@ export function Pricing({ currentPlanId = "free", showCurrentPlanBadge = false }
       price: "$99",
       description: "For large scale operations.",
       features: ["Everything in Pro", "24/7 phone support", "Dedicated success manager", "SLA guarantees"],
-      priceId: process.env.NEXT_PUBLIC_STRIPE_ENTERPRISE_PRICE_ID!,
+      priceId: process.env.NEXT_PUBLIC_STRIPE_ENTERPRISE_PRICE_ID || "",
     },
   ];
 

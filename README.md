@@ -67,9 +67,10 @@ NEXT_PUBLIC_POSTHOG_HOST="https://app.posthog.com"
 ```
 
 ### 3. Database Migration
-Initialize your database schema:
+Initialize your database schema and generate the Prisma Client:
 ```bash
 npx prisma db push
+npx prisma generate
 ```
 
 ### 4. Stripe Webhook Tunneling

@@ -3,7 +3,7 @@ import { WaitlistForm } from "@/features/auth/components/WaitlistForm";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { getSystemPreferences } from "@/features/admin/actions/settings-action";
+import { getSystemPreferences } from "@/features/admin/actions/settings.action";
 import { 
   Card, 
   CardHeader, 

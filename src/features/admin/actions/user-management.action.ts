@@ -111,10 +111,12 @@ export async function adminSendPasswordResetAction(
 
     const { email } = passwordResetSchema.parse(data);
 
+    const baseUrl = process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
     await auth.api.requestPasswordReset({
       body: {
         email,
-        redirectTo: `${process.env.BETTER_AUTH_URL}/reset-password`,
+        redirectTo: `${baseUrl}/reset-password`,
       },
     });
 

@@ -5,7 +5,7 @@ import { WelcomeEmail } from "@/features/emails/templates/WelcomeEmail";
 import { ResetPasswordEmail } from "@/features/emails/templates/ResetPasswordEmail";
 import { VerificationEmail } from "@/features/emails/templates/VerificationEmail";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 const FROM_EMAIL = process.env.FROM_EMAIL || "SaaSStarter <onboarding@resend.dev>";
 const APP_URL = process.env.BETTER_AUTH_URL || "http://localhost:3000";
@@ -14,6 +14,16 @@ const APP_URL = process.env.BETTER_AUTH_URL || "http://localhost:3000";
  * Send a Welcome email to a newly registered user.
  */
 export async function sendWelcomeEmail({ to, name }: { to: string; name: string }) {
+  if (!resend) {
+    console.log("-----------------------------------------");
+    console.log(`[MAIL] WELCOME EMAIL (DEVELOPMENT MODE)`);
+    console.log(`To: ${to}`);
+    console.log(`Name: ${name}`);
+    console.log(`Login URL: ${APP_URL}/login`);
+    console.log("-----------------------------------------");
+    return { success: true, data: { id: "mock_id" } };
+  }
+
   try {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
@@ -46,6 +56,16 @@ export async function sendPasswordResetEmail({
   url: string;
   user: { name: string } 
 }) {
+  if (!resend) {
+    console.log("-----------------------------------------");
+    console.log(`[MAIL] PASSWORD RESET (DEVELOPMENT MODE)`);
+    console.log(`To: ${to}`);
+    console.log(`User: ${user.name}`);
+    console.log(`Reset URL: ${url}`);
+    console.log("-----------------------------------------");
+    return { success: true, data: { id: "mock_id" } };
+  }
+
   try {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
@@ -81,6 +101,16 @@ export async function sendVerificationEmail({
   url: string;
   user: { name: string } 
 }) {
+  if (!resend) {
+    console.log("-----------------------------------------");
+    console.log(`[MAIL] EMAIL VERIFICATION (DEVELOPMENT MODE)`);
+    console.log(`To: ${to}`);
+    console.log(`User: ${user.name}`);
+    console.log(`Verification URL: ${url}`);
+    console.log("-----------------------------------------");
+    return { success: true, data: { id: "mock_id" } };
+  }
+
   try {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,

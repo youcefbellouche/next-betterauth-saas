@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Sparkles, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { joinWaitlistAction } from "../actions/waitlist-action";
+import { joinWaitlistAction } from "../actions/waitlist.action";
 
 export function WaitlistForm() {
   const [email, setEmail] = useState("");

@@ -5,7 +5,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { ExtendedUser } from "@/lib/types";
 import { ImpersonationBanner } from "@/features/admin/components/ImpersonationBanner";
-import { getSystemPreferences } from "@/features/admin/actions/settings-action";
+import { getSystemPreferences } from "@/features/admin/actions/settings.action";
 
 async function DashboardShell({ children }: { children: React.ReactNode }) {
   const session = await auth.api.getSession({

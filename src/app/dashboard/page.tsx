@@ -23,7 +23,7 @@ export default async function DashboardPage() {
     }
   });
 
-  const proPriceId = process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID!;
+  const proPriceId = process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID || "";
   const isFreeTier = !subscription;
 
   // Determine plan name from the Better Auth plugin's `plan` field
@@ -73,7 +73,7 @@ export default async function DashboardPage() {
               </div>
             )}
           </CardContent>
-          {isFreeTier && (
+          {isFreeTier && proPriceId && (
             <CardFooter>
               <CheckoutButton 
                 priceId={proPriceId} 

@@ -37,6 +37,10 @@ export async function getUserInvoices(): Promise<ActionResponse<InvoiceRecord[]>
       return { success: true, data: [] };
     }
 
+    if (!stripe) {
+      return { success: false, error: "Stripe is not configured." };
+    }
+
     const invoices = await stripe.invoices.list({
       customer: customerId,
       limit: 5,
@@ -75,6 +79,10 @@ export async function createBillingPortalSession(): Promise<ActionResponse<{ url
 
     if (!customerId) {
       return { success: false, error: "No active billing account found. Please subscribe to a plan first." };
+    }
+
+    if (!stripe) {
+      return { success: false, error: "Stripe is not configured." };
     }
 
     // Determine the base URL dynamically or fallback to localhost

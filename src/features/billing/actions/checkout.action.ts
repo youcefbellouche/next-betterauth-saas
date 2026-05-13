@@ -36,10 +36,16 @@ export async function createCheckoutSession(priceId: string) {
     }
 
     // 3. Prepare customer parameter (use stripeCustomerId if available)
+    if (!stripe) {
+      return { error: "Payments are currently disabled in this environment." };
+    }
+
     const stripeCustomerId = (session.user as ExtendedUser).stripeCustomerId;
     const customerParams = stripeCustomerId 
       ? { customer: stripeCustomerId }
       : { customer_email: session.user.email };
+
+    const baseUrl = process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
     // 4. Generate Stripe Checkout Session URL
     const checkoutSession = await stripe.checkout.sessions.create({
@@ -56,8 +62,8 @@ export async function createCheckoutSession(priceId: string) {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.BETTER_AUTH_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.BETTER_AUTH_URL}/#pricing`,
+      success_url: `${baseUrl}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/#pricing`,
     });
 
     if (!checkoutSession.url) {
